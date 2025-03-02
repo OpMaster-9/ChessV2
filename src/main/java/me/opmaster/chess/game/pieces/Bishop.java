@@ -66,9 +66,9 @@ public class Bishop extends Piece{
     @Override
     public char getChar() {
         if (isWhite()) {
-            return '♝';
-        } else {
             return '♗';
+        } else {
+            return '♝';
         }
     }
 }
