@@ -12,6 +12,11 @@ public class Pawn extends Piece {
         super(isWhite);
     }
 
+    private boolean isDestinationEnPassantField(Board board, int destinationX, int destinationY) {
+        int[] enPassantField = isWhite() ? board.blackEnPassantField : board.whiteEnPassantField;
+        return enPassantField != null && enPassantField[0] == destinationX && enPassantField[1] == destinationY;
+    }
+
     @Override
     public boolean isLegal(Board board, int startX, int startY, int destinationX, int destinationY) {
         int direction;
@@ -28,13 +33,26 @@ public class Pawn extends Piece {
         boolean destinationIsEmpty = board.isFieldEmpty(destinationX, destinationY);
         boolean destinationHasEnemy = !board.isFieldEmpty(destinationX, destinationY) && board.getPiece(destinationX, destinationY).isWhite() != isWhite();
 
+        boolean destinationIsEnPassantField = isDestinationEnPassantField(board, destinationX, destinationY);
+
         if (destinationX == startX && destinationY == startY  + direction && destinationIsEmpty) {
             return true; // Single step forward
         }
         if (startY == startRow && destinationX == startX && destinationY == startY  + 2 * direction && destinationIsEmpty && board.isFieldEmpty(startX, startY + direction)) {
+
+            int[] enPassantField = {startX, startY + direction};
+            if (isWhite()){
+                board.whiteEnPassantField = enPassantField;
+            } else {
+                board.blackEnPassantField = enPassantField;
+            }
+
             return true; // Double step forward
         }
-        if ( Math.abs(destinationX - startX) == 1 && destinationY == startY + direction && (destinationHasEnemy || destinationIsEmpty)) {
+        if ( Math.abs(destinationX - startX) == 1 && destinationY == startY + direction && (destinationHasEnemy || destinationIsEnPassantField)) {
+            if (destinationIsEnPassantField) {
+                board.setPiece(null, destinationX, startY);
+            }
             return true; // Diagonal capture
         }
         return false;

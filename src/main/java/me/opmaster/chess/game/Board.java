@@ -3,11 +3,13 @@ package me.opmaster.chess.game;
 
 import me.opmaster.chess.game.pieces.*;
 
-import java.util.Objects;
+import java.util.Arrays;
 
 public class Board {
     private Piece[][] board = new Piece[8][8];
     private boolean isWhitesTurn = true;
+    public int[] whiteEnPassantField;
+    public int[] blackEnPassantField;
 
     public void initialize() {
         board[4][0] = new King(true);
@@ -38,6 +40,13 @@ public class Board {
     }
 
     public void movePiece(int originalX, int originalY, int targetX, int targetY) {
+        if (isWhitesTurn) {
+            whiteEnPassantField = null;
+        } else {
+            blackEnPassantField = null;
+        }
+        System.out.println(Arrays.toString(whiteEnPassantField) + " " + Arrays.toString(blackEnPassantField));
+
         if (board[originalX][originalY] == null) {
             System.out.println("No piece at the selected position.");
             return;
