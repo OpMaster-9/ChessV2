@@ -15,6 +15,16 @@ public abstract class Piece {
         return isWhite;
     }
 
+    private boolean hasMoved;
+
+    public void setHasMoved(boolean hasMoved) {
+
+    }
+
+    public boolean hasMoved() {
+        return hasMoved;
+    }
+
     public abstract boolean isLegal(Board board, int startX, int startY, int destinationX, int destinationY);
 
     public abstract List<int[]> possibleMoves(Board board, int startX, int startY);

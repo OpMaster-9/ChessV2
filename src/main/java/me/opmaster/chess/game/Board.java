@@ -59,6 +59,7 @@ public class Board {
         if (board[originalX][originalY].isLegal(this, originalX, originalY, targetX, targetY)) {
             board[targetX][targetY] = board[originalX][originalY];
             board[originalX][originalY] = null;
+            board[targetX][targetY].setHasMoved(true);
             System.out.println("Move successful.");
             nextTurn();
         } else {
