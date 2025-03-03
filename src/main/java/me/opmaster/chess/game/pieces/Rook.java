@@ -6,22 +6,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Rook extends Piece{
-    public Rook(boolean isWhite) {
-        super(isWhite);
+    public Rook(boolean isWhite, Board board) {
+        super(isWhite, board);
     }
 
+    private Board board = getBoard();
+
     @Override
-    public boolean isLegal(Board board, int startX, int startY, int destinationX, int destinationY) {
+    public boolean isLegal(int startX, int startY, int destinationX, int destinationY) {
         if (startX == destinationX || startY == destinationY){ //move is a straight line
             boolean destinationIsEmpty = board.isFieldEmpty(destinationX, destinationY);
             boolean destinationHasEnemy = !board.isFieldEmpty(destinationX, destinationY) && board.getPiece(destinationX, destinationY).isWhite() != isWhite();
 
-            return isPathClear(board, startX, startY, destinationX, destinationY) && (destinationIsEmpty || destinationHasEnemy);
+            return isPathClear(startX, startY, destinationX, destinationY) && (destinationIsEmpty || destinationHasEnemy);
         }
         return false;
     }
 
-    private boolean isPathClear(Board board, int startX, int startY, int destinationX, int destinationY) {
+    private boolean isPathClear(int startX, int startY, int destinationX, int destinationY) {
         int dx = Integer.compare(destinationX, startX);
         int dy = Integer.compare(destinationY, startY);
 
@@ -38,7 +40,7 @@ public class Rook extends Piece{
 
 
     @Override
-    public List<int[]> possibleMoves(Board board, int startX, int startY) {
+    public List<int[]> possibleMoves(int startX, int startY) {
         List<int[]> allMoves = new ArrayList<>();
         int[][] deltas = {
                 {0, 1}, {0, -1}, {1, 0}, {-1, 0}

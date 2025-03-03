@@ -12,30 +12,30 @@ public class Board {
     public int[] blackEnPassantField;
 
     public void initialize() {
-        board[4][0] = new King(true);
-        board[4][7] = new King(false);
+        board[4][0] = new King(true, this);
+        board[4][7] = new King(false, this);
 
-        board[3][0] = new Queen(true);
-        board[3][7] = new Queen(false);
+        board[3][0] = new Queen(true, this);
+        board[3][7] = new Queen(false, this);
 
-        board[2][0] = new Bishop(true);
-        board[5][0] = new Bishop(true);
-        board[2][7] = new Bishop(false);
-        board[5][7] = new Bishop(false);
+        board[2][0] = new Bishop(true, this);
+        board[5][0] = new Bishop(true, this);
+        board[2][7] = new Bishop(false, this);
+        board[5][7] = new Bishop(false, this);
 
-        board[1][0] = new Knight(true);
-        board[6][0] = new Knight(true);
-        board[1][7] = new Knight(false);
-        board[6][7] = new Knight(false);
+        board[1][0] = new Knight(true, this);
+        board[6][0] = new Knight(true, this);
+        board[1][7] = new Knight(false, this);
+        board[6][7] = new Knight(false, this);
 
-        board[0][0] = new Rook(true);
-        board[7][0] = new Rook(true);
-        board[0][7] = new Rook(false);
-        board[7][7] = new Rook(false);
+        board[0][0] = new Rook(true, this);
+        board[7][0] = new Rook(true, this);
+        board[0][7] = new Rook(false, this);
+        board[7][7] = new Rook(false, this);
 
         for (int i = 0; i < 8; i++) {
-            board[i][1] = new Pawn(true);
-            board[i][6] = new Pawn(false);
+            board[i][1] = new Pawn(true, this);
+            board[i][6] = new Pawn(false, this);
         }
     }
 
@@ -56,7 +56,7 @@ public class Board {
             System.out.println("Enemy Piece.");
             return;
         }
-        if (board[originalX][originalY].isLegal(this, originalX, originalY, targetX, targetY)) {
+        if (board[originalX][originalY].isLegal(originalX, originalY, targetX, targetY)) {
             board[targetX][targetY] = board[originalX][originalY];
             board[originalX][originalY] = null;
             board[targetX][targetY].setHasMoved(true);

@@ -6,12 +6,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Knight extends Piece{
-    public Knight(boolean isWhite) {
-        super(isWhite);
+    public Knight(boolean isWhite, Board board) {
+        super(isWhite, board);
     }
 
+    private Board board = getBoard();
+
     @Override
-    public boolean isLegal(Board board, int startX, int startY, int destinationX, int destinationY) {
+    public boolean isLegal(int startX, int startY, int destinationX, int destinationY) {
         int dx = Math.abs(destinationX - startX);
         int dy = Math.abs(destinationY - startY);
 
@@ -22,7 +24,7 @@ public class Knight extends Piece{
     }
 
     @Override
-    public List<int[]> possibleMoves(Board board, int startX, int startY) {
+    public List<int[]> possibleMoves(int startX, int startY) {
         List<int[]> allMoves = new ArrayList<>();
         // Possible moves for a knight
         int[][] moves = {

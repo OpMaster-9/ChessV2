@@ -8,9 +8,11 @@ import java.util.List;
 
 public class Pawn extends Piece {
 
-    public Pawn(boolean isWhite) {
-        super(isWhite);
+    public Pawn(boolean isWhite, Board board) {
+        super(isWhite, board);
     }
+
+    private Board board = getBoard();
 
     private boolean isDestinationEnPassantField(Board board, int destinationX, int destinationY) {
         int[] enPassantField = isWhite() ? board.blackEnPassantField : board.whiteEnPassantField;
@@ -18,7 +20,7 @@ public class Pawn extends Piece {
     }
 
     @Override
-    public boolean isLegal(Board board, int startX, int startY, int destinationX, int destinationY) {
+    public boolean isLegal(int startX, int startY, int destinationX, int destinationY) {
         int direction;
         int startRow;
         if (isWhite()) {
@@ -59,7 +61,7 @@ public class Pawn extends Piece {
     }
 
     @Override
-    public List<int[]> possibleMoves(Board board, int startX, int startY) {
+    public List<int[]> possibleMoves(int startX, int startY) {
         List<int[]> allMoves = new ArrayList<>();
 
         int direction;

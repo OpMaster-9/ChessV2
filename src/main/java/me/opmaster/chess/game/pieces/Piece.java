@@ -6,13 +6,19 @@ import java.util.List;
 
 public abstract class Piece {
     private boolean isWhite;
+    private Board board;
 
-    public Piece(boolean isWhite) {
+    public Piece(boolean isWhite, Board board) {
         this.isWhite = isWhite;
+        this.board = board;
     }
 
     public boolean isWhite() {
         return isWhite;
+    }
+
+    public Board getBoard() {
+        return board;
     }
 
     private boolean hasMoved;
@@ -25,9 +31,9 @@ public abstract class Piece {
         return hasMoved;
     }
 
-    public abstract boolean isLegal(Board board, int startX, int startY, int destinationX, int destinationY);
+    public abstract boolean isLegal(int startX, int startY, int destinationX, int destinationY);
 
-    public abstract List<int[]> possibleMoves(Board board, int startX, int startY);
+    public abstract List<int[]> possibleMoves(int startX, int startY);
 
     public abstract char getChar();
 }
