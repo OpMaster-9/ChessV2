@@ -1,6 +1,7 @@
 package me.opmaster.chess.game.pieces;
 
 
+import me.opmaster.chess.app.page.promotion;
 import me.opmaster.chess.game.Board;
 
 import java.util.ArrayList;
@@ -26,8 +27,7 @@ public class Pawn extends Piece {
         if (isWhite()) {
             direction = 1;
             startRow = 1;
-        }
-        else {
+        } else {
             direction = -1;
             startRow = 6;
         }
@@ -41,20 +41,9 @@ public class Pawn extends Piece {
             return true; // Single step forward
         }
         if (startY == startRow && destinationX == startX && destinationY == startY  + 2 * direction && destinationIsEmpty && board.isFieldEmpty(startX, startY + direction)) {
-
-            int[] enPassantField = {startX, startY + direction};
-            if (isWhite()){
-                board.whiteEnPassantField = enPassantField;
-            } else {
-                board.blackEnPassantField = enPassantField;
-            }
-
             return true; // Double step forward
         }
-        if ( Math.abs(destinationX - startX) == 1 && destinationY == startY + direction && (destinationHasEnemy || destinationIsEnPassantField)) {
-            if (destinationIsEnPassantField) {
-                board.setPiece(null, destinationX, startY);
-            }
+        if (Math.abs(destinationX - startX) == 1 && destinationY == startY + direction && (destinationHasEnemy || destinationIsEnPassantField)) {
             return true; // Diagonal capture
         }
         return false;

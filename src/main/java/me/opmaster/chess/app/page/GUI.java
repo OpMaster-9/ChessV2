@@ -112,6 +112,15 @@ public class GUI{
                             board.movePiece(feld1[1], feld1[0], feld2[1], feld2[0]);
                         }
                         refresh();
+                        white.stop();
+                        black.stop();
+                        if (board.isWhitesTurn()) {
+                            indicator.setText("Weiß am Zug.");
+                            white.start();
+                        } else {
+                            indicator.setText("Schwarz am Zug.");
+                            black.start();
+                        }
                     }
                 });
                 l += 8;

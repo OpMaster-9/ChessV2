@@ -22,20 +22,35 @@ public class King extends Piece{
         boolean destinationHasEnemy = !board.isFieldEmpty(destinationX, destinationY) && board.getPiece(destinationX, destinationY).isWhite() != isWhite();
 
         if (dx <= 1 && dy <= 1) { // Normal Move (one square in any direction)
-            return board.getPiece(destinationX, destinationY) == null || board.getPiece(destinationX, destinationY).isWhite() != isWhite();
+            return destinationIsEmpty || destinationHasEnemy;
         }
 
-        int cornerRookX = destinationX < startX ? 0 : 7;
-        int cornerRookY = isWhite() ? 0 : 7;
-        boolean isThirdFieldEmpty = destinationX > startX || board.isFieldEmpty(destinationX - 1, startY);
+        if (dy != 0 || dx != 2 || hasMoved) return false;
 
-        if (destinationY == startY && dx == 2 && destinationIsEmpty && board.isFieldEmpty(((destinationX - startX) / 2) + startX, startY) && !hasMoved && !board.getPiece(cornerRookX, cornerRookY).hasMoved() && isThirdFieldEmpty) {
-            board.setPiece(board.getPiece(cornerRookX, cornerRookY), ((destinationX - startX) / 2) + startX, cornerRookY);
-            board.setPiece(null, cornerRookX, cornerRookY);
-            board.getPiece(((destinationX - startX) / 2) + startX, cornerRookY).setHasMoved(true);
-            return true;
+        // Can't castle out of or through check
+        if (board.inCheck(isWhite(), startX, startY)) return false;
+
+        int direction = (destinationX - startX) / 2; // +1 (kingside) or -1 (queenside)
+        int rookX = destinationX > startX ? 7 : 0;
+        int rookY = startY;
+
+        Piece rook = board.getPiece(rookX, rookY);
+        if (!(rook instanceof Rook) || rook.hasMoved()) return false;
+
+        // Ensure all squares between king and rook are empty
+        int step = destinationX > startX ? 1 : -1;
+        for (int x = startX + step; x != rookX; x += step) {
+            if (!board.isFieldEmpty(x, startY)) return false;
         }
-        return false;
+
+        // Check that king does not move through or into check
+        for (int x = startX; x != destinationX + step; x += step) {
+            if (board.moveIsLegal(startX, startY, x, startY, isWhite())) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     @Override
